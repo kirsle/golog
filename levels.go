@@ -14,6 +14,7 @@ const (
 	InfoLevel
 	WarnLevel
 	ErrorLevel
+	FatalLevel
 )
 
 // Map log levels to human readable labels.
@@ -22,6 +23,7 @@ var levelNames = map[logLevel]string{
 	InfoLevel:  "INFO",
 	WarnLevel:  "WARN",
 	ErrorLevel: "ERROR",
+	FatalLevel: "FATAL",
 }
 
 // emit is the general purpose log line emitter.
@@ -30,6 +32,7 @@ func (l *Logger) emit(level logLevel, tmpl string, args ...interface{}) {
 
 	// If we have a log writer, send it there.
 	if l.Config.Writer != nil {
+		// TODO
 		// l.Config.Writer.Write(message)
 	} else {
 		// No writer given so we default to standard out/error.
@@ -67,4 +70,9 @@ func (l *Logger) Error(tmpl string, args ...interface{}) {
 	if l.Config.Level <= ErrorLevel {
 		l.emit(ErrorLevel, tmpl, args...)
 	}
+}
+
+// Fatal logs a fatal message and quits.
+func (l *Logger) Fatal(tmpl string, args ...interface{}) {
+	l.emit(FatalLevel, tmpl, args...)
 }

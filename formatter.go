@@ -49,7 +49,7 @@ func (l *Logger) Format(level logLevel, tmpl string, args ...interface{}) string
 	}
 
 	// Find the theme color to use.
-	if l.Config.Colors != NoColor {
+	if interactive && l.Config.Colors != NoColor {
 		var (
 			primary   ThemeColor
 			secondary ThemeColor

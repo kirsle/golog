@@ -1,8 +1,11 @@
 package golog
 
 import (
+	"os"
 	"sync"
 	"text/template"
+
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 // An internal map of named loggers. This allows for GetLogger() to be called
@@ -11,10 +14,16 @@ import (
 var (
 	loggers     map[string]*Logger
 	loggerMutex sync.Mutex
+
+	interactive bool // is an interactive shell
 )
 
 func init() {
 	loggers = map[string]*Logger{}
+
+	// Detect if we're running in an interactive shell, so we can globally
+	// disable colors when redirecting to a log file.
+	interactive = terminal.IsTerminal(int(os.Stdout.Fd()))
 }
 
 // Logger stores the configuration for a named logger instance.

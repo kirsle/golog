@@ -3,6 +3,8 @@ package golog
 import "testing"
 
 func TestColors(t *testing.T) {
+	interactive = true // fake an interactive TTY to test color outputs
+
 	log := GetLogger("test")
 
 	// Helper function to emit all the log types.
